@@ -1,5 +1,6 @@
 package com.myspringprojects.rnd.mockitolearning.testdoubles.fake;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BookServiceTest {
 
     @Test
+    @DisplayName("Fake Test Double without Mockito")
     void testWithFakeService() {
         // Create an instance of the bookService injecting a FakeBookRepository.
         BookService bookService = new BookService(new FakeBookRepository());
