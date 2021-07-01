@@ -61,6 +61,11 @@ public class BookService {
             return;
         }
         Book book = bookRepository.findById(bookId);
+
+        // If the updated price is same as the existing price, return.
+        if (book.getPrice() == updatedPrice) {
+            return;
+        }
         book.setPrice(updatedPrice);
         bookRepository.save(book);
     }

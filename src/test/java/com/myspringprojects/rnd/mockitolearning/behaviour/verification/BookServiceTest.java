@@ -79,4 +79,18 @@ class BookServiceTest {
         bookService.updatePrice(null, 600);
         verifyNoInteractions(bookRepository);
     }
+
+    @Test
+    @DisplayName("Verify no unexpected interactions occur -  Update Book Price with Same Price")
+    void testUpdatePriceWithSamePrice() {
+        Book book = new Book("1234", "JUnit 5 in Action", 600, LocalDate.now());
+        when(bookRepository.findById("1234")).thenReturn(book);
+        bookService.updatePrice("1234", 600);
+
+        // Verify that findById is called exactly once on the repository with "1234" as parameter.
+        verify(bookRepository).findById("1234");
+
+        // Verify that after findById, no other interactions occurred with the repository.
+        verifyNoMoreInteractions(bookRepository);
+    }
 }
