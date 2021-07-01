@@ -3,6 +3,7 @@ package com.myspringprojects.rnd.mockitolearning.exceptionhandling;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -28,6 +29,19 @@ class BookServiceTest {
     void testGetTotalPriceOfBooksForException() throws SQLException {
         // Stub the book repository findAllBooks method to throw an SQLException.
         Mockito.when(bookRepository.findAllBooks()).thenThrow(SQLException.class);
+
+        // Verify that the service method throws an ApplicationException when it obtains
+        // an SQLException from the repository.
+        assertThrows(ApplicationException.class, () -> bookService.getTotalPriceOfBooks());
+    }
+
+    @Test
+    @DisplayName("Exception Handling for Non Void Method BDD Style - Total Price of Books")
+    void testGetTotalPriceOfBooksForExceptionBDDStyle() throws SQLException {
+
+        // Stub the book repository findAllBooks method to throw an SQLException using
+        // BDDMockito class.
+        BDDMockito.given(bookRepository.findAllBooks()).willThrow(SQLException.class);
 
         // Verify that the service method throws an ApplicationException when it obtains
         // an SQLException from the repository.
