@@ -3,6 +3,7 @@ package com.myspringprojects.rnd.mockitolearning.behaviour.verification;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -92,5 +93,24 @@ class BookServiceTest {
 
         // Verify that after findById, no other interactions occurred with the repository.
         verifyNoMoreInteractions(bookRepository);
+    }
+
+    @Test
+    @DisplayName("Verify Order of Interactions")
+    void testUpdatePriceWithDifferentPriceOrder() {
+        Book book = new Book("1234", "JUnit 5 in Action", 500, LocalDate.now());
+        when(bookRepository.findById("1234")).thenReturn(book);
+        bookService.updatePrice("1234", 600);
+
+        // use and InOrder instance to verify the order of execution of methods on the mock object.
+        InOrder inOrder = Mockito.inOrder(bookRepository);
+
+        // Verify that findById is called exactly once on the repository with "1234" as parameter.
+        inOrder.verify(bookRepository).findById("1234");
+
+        // Verify that the save method is called exactly once on the repository
+        inOrder.verify(bookRepository).save(book);
+
+
     }
 }
