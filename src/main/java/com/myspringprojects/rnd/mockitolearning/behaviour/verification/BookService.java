@@ -55,4 +55,13 @@ public class BookService {
         bookRepository.save(book);
     }
 
+    public void updatePrice(String bookId, int updatedPrice) {
+        // If the bookId is null, don't do anything.
+        if (bookId == null) {
+            return;
+        }
+        Book book = bookRepository.findById(bookId);
+        book.setPrice(updatedPrice);
+        bookRepository.save(book);
+    }
 }

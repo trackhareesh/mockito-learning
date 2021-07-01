@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Behaviour Verification")
@@ -41,7 +42,7 @@ class BookServiceTest {
         Book book = new Book(null, "JUnit 5 in Action", 500, LocalDate.now());
         bookService.addBook(bookRequest);
 
-        // Verify that the save methohd is called 0 times (i.e. never called), as the
+        // Verify that the save method is called 0 times (i.e. never called), as the
         // book price is <= 500
         Mockito.verify(bookRepository, Mockito.times(0)).save(book);
     }
@@ -54,8 +55,28 @@ class BookServiceTest {
         Book book = new Book(null, "JUnit 5 in Action", 500, LocalDate.now());
         bookService.addBook(bookRequest);
 
-        // Verify that the save methohd is called 0 times (i.e. never called), as the
+        // Verify that the save method is called 0 times (i.e. never called), as the
         // book price is <= 500
         Mockito.verify(bookRepository, Mockito.times(0)).save(book);
+    }
+
+    @Test
+    @DisplayName("Verify No Interaction Using never()")
+    void testAddBookWithPriceEqualTo500UsingNever() {
+
+        BookRequest bookRequest = new BookRequest("JUnit 5 in Action", 500, LocalDate.now());
+        Book book = new Book(null, "JUnit 5 in Action", 500, LocalDate.now());
+        bookService.addBook(bookRequest);
+
+        // Verify that the save method is called 0 times (i.e. never called), as the
+        // book price is <= 500
+        Mockito.verify(bookRepository, never()).save(book);
+    }
+
+    @Test
+    @DisplayName("Verify no interaction with mock - Update Book Price")
+    void testUpdatePrice() {
+        bookService.updatePrice(null, 600);
+        verifyNoInteractions(bookRepository);
     }
 }
