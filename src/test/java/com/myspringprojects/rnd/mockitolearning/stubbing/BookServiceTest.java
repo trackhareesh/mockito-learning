@@ -55,4 +55,26 @@ class BookServiceTest {
         assertEquals(900, totalCost);
 
     }
+
+    @Test
+    @DisplayName("Stubbing Void Method")
+    public void testSaveBook() {
+        Book book1 = new Book(null, "JUnit 5 in Action", 500, LocalDate.now());
+        Mockito.doNothing().when(bookRepository).save(book1);
+        bookService.addBook(book1);
+    }
+
+    @Test
+    @DisplayName("Stubbing void method with change in argument")
+    public void testSaveBookWithBookRequest() {
+
+        LocalDate date = LocalDate.now();
+        BookRequest bookRequest = new BookRequest("JUnit 5 in Action", 500, date);
+
+        Book book = new Book(null, "JUnit 5 in Action", 500, date);
+        Mockito.doNothing().when(bookRepository).save(book);
+
+        bookService.addBook(bookRequest);
+    }
+
 }
