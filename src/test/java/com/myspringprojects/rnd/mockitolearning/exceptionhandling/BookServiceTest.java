@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,4 +33,19 @@ class BookServiceTest {
         // an SQLException from the repository.
         assertThrows(ApplicationException.class, () -> bookService.getTotalPriceOfBooks());
     }
+
+    @Test
+    @DisplayName("Exception Handling for Void Method - Save Book")
+    void testSaveBookForException() throws SQLException {
+
+        Book book = new Book("1234", "JUnit 5 in Action", 500, LocalDate.now());
+
+        // Stub the book repository findAllBooks method to throw an SQLException.
+        Mockito.doThrow(SQLException.class).when(bookRepository).save(book);
+
+        // Verify that the service method throws an ApplicationException when it obtains
+        // an SQLException from the repository.
+        assertThrows(ApplicationException.class, () -> bookService.addBook(book));
+    }
+
 }

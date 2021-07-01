@@ -22,4 +22,13 @@ public class BookService {
         }
     }
 
+    public void addBook(Book book) {
+        try {
+            bookRepository.save(book);
+        } catch(SQLException exception) {
+            // Log the exception and throw ApplicationException
+            throw new ApplicationException("Unable to save to DB. Reason - " + exception.getMessage());
+        }
+    }
+
 }
