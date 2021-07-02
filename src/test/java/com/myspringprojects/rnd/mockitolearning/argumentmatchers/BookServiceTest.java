@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -24,7 +25,7 @@ class BookServiceTest {
 
     @Test
     @DisplayName("Type Argument Matchers Test - Update Price")
-    void testUpdatePriceWithSamePrice() {
+    void testUpdatePrice() {
 
         Book book1 = new Book("1234", "JUnit 5 in Action", 600, LocalDate.now());
         Book book2 = new Book("1234", "JUnit 5 in Action", 700, LocalDate.now());
@@ -55,4 +56,32 @@ class BookServiceTest {
         Book actualBook = bookService.getBookByTitlePriceAndIsDigital("JUnit 5 in Action", 600, true);
         assertEquals("JUnit 5 in Action", actualBook.getTitle());
     }
+
+    @Test
+    @DisplayName("Collection Type Argument Matchers Test - Save Books")
+    void testSaveBooks() {
+        Book book = new Book("1234", "JUnit 5 in Action", 600, LocalDate.now());
+        List<Book> books = List.of(book);
+
+        bookService.addBooks(books);
+
+        // verify that saveAll is called exactly once with a list as the parameter.
+        // We  use the anyList() argument matcher here as we are not interested in the
+        // specific parameter.
+        verify(bookRepository).saveAll(anyList());
+
+    }
+
+    @Test
+    @DisplayName("String Type Argument Matchers - Get Book By Title, Price and IsDigital")
+    void testGetBookByTitlePriceAndIsDigital2() {
+        Book book = new Book("1234", "JUnit 5 in Action", 600, LocalDate.now(), true);
+        // We can use string argument matchers like matches(), contains(), startsWith() and endsWith() here
+        // instead of the actual string.
+        when(bookRepository.findByTitlePriceAndIsDigital(matches("JUnit.*"), anyInt(), anyBoolean())).thenReturn(book);
+        Book actualBook = bookService.getBookByTitlePriceAndIsDigital("JUnit 5 in Action", 600, true);
+        assertEquals("JUnit 5 in Action", actualBook.getTitle());
+    }
+
+
 }

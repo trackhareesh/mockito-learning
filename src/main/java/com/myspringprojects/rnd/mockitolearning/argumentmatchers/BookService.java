@@ -2,6 +2,7 @@ package com.myspringprojects.rnd.mockitolearning.argumentmatchers;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class BookService {
 
@@ -81,4 +82,13 @@ public class BookService {
         return bookRepository.findByTitlePriceAndIsDigital(title, price, isDigital);
     }
 
+    /**
+     * Method to test stubbing of a void method using mockito.
+     *
+     * @param books The books to be saved.
+     */
+    public void addBooks(List<Book> books) {
+
+        bookRepository.saveAll(books);
+    }
 }
